@@ -1,5 +1,9 @@
+import JiraSpace from '@/components/JiraSpace/JiraSpace';
+
 function Jira() {
-  return <h1>Jira</h1>;
+  const items = new Array(5);
+  items.fill(0);
+  return <JiraSpace />;
 }
 
 export default Jira;

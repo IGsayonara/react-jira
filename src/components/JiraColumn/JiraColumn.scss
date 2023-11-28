@@ -1,0 +1,9 @@
+.jira-column {
+  height: 100vh;
+  padding: 15px;
+
+  &__headline {
+    display: flex;
+    justify-content: space-between;
+  }
+}
