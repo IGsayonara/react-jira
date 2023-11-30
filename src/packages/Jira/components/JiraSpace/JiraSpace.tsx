@@ -2,22 +2,20 @@ import { useState } from 'react';
 import type { DropResult } from 'react-beautiful-dnd';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-import JIraColumn from '@/components/JiraColumn/JIraColumn';
+import ModalWindow from '@/common/components/ModalWindow/ModalWindow';
+import CardCreation from '@/packages/Jira/components/CardCreation/CardCreation';
+import JIraColumn from '@/packages/Jira/components/JiraColumn/JIraColumn';
 
 import './JiraSpace.scss';
+import type { ICard } from '@/packages/Jira/interfaces/jira.interface';
+import { useJiraContext } from '@/packages/Jira/providers/JiraProvider';
 
 function JiraSpace() {
-  const [columns, setColumns] = useState([
-    {
-      title: 'Column 1',
-      cards: [
-        { id: '1', title: 'Card 1', description: 'Jira card text ahahah', columnId: 'Column 1' },
-        { id: '2', title: 'Card 2', description: 'Jira card text ahahah', columnId: 'Column 1' },
-      ],
-    },
-    { title: 'Column 2', cards: [] },
-    { title: 'Column 3', cards: [] },
-  ]);
+  const { columns, setColumns, openedCard, setOpenedCard } = useJiraContext();
+
+  const onModalClose = () => {
+    setOpenedCard(null);
+  };
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -43,6 +41,11 @@ function JiraSpace() {
         {columns.map(({ title, cards }) => {
           return <JIraColumn title={title} key={title} cards={cards} />;
         })}
+        <ModalWindow isOpen={!!openedCard} onClose={onModalClose}>
+          <div>
+            <CardCreation />
+          </div>
+        </ModalWindow>
       </div>
     </DragDropContext>
   );
