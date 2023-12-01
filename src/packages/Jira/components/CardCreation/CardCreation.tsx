@@ -1,6 +1,8 @@
 import type { FormEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { decrement, increment } from '@/packages/Jira/features/counterSlice';
 import { useJiraContext } from '@/packages/Jira/providers/JiraProvider';
 
 function CardCreation() {
@@ -9,9 +11,12 @@ function CardCreation() {
   const [description, setDescription] = useState(openedCard?.description || '');
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const count = useSelector((state: any) => state.counter.count);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     inputRef.current?.focus();
-  });
+  }, []);
 
   const onTitleInputChange = (e: FormEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value);
@@ -22,7 +27,7 @@ function CardCreation() {
   };
 
   const onSaveButtonClick = () => {
-    console.log(title, description);
+    dispatch(increment());
   };
 
   return (
@@ -40,7 +45,7 @@ function CardCreation() {
       </div>
       <div>
         <button type="submit" onClick={onSaveButtonClick}>
-          Save
+          Save {count}
         </button>
       </div>
     </div>
