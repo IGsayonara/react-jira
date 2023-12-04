@@ -3,23 +3,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/store/store';
 
 import ModalWindow from '@/common/components/ModalWindow/ModalWindow';
-import type { CreateCardProps } from '@/packages/Jira/components/CardCreation/CreateCard';
 import CreateCard from '@/packages/Jira/components/CardCreation/CreateCard';
+import EditCard from '@/packages/Jira/components/CardCreation/EditCard';
 
 import type { IModalProps } from '@/common/features/modalSlice';
 import { closeModal } from '@/common/features/modalSlice';
 
 function ModalWrapper() {
   const modalContent = useSelector((state: RootState) => state.modal.modalContent);
-
   const modalFactory = () => {
     switch (modalContent?.component) {
       case 'jira/createCard': {
-        const { columnId } = modalContent.props as IModalProps['jira/createCard'];
-        return <CreateCard columnId={columnId} />;
+        const { props } = modalContent as unknown as IModalProps['jira/createCard'];
+        if (!props) {
+          return null;
+        }
+        return <CreateCard columnId={props.columnId} />;
       }
       case 'jira/editCard': {
-        return <div onClick={console.log} />;
+        const { props } = modalContent as unknown as IModalProps['jira/editCard'];
+        if (!props) {
+          return null;
+        }
+        return <EditCard id={props.id} title={props.title} description={props.description} columnId={props.columnId} />;
       }
       default: {
         return null;

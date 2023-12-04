@@ -1,9 +1,10 @@
 import type { MouseEventHandler, RefObject } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { FaEdit } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 
 import './JiraCard.scss';
-import { useJiraContext } from '@/packages/Jira/providers/JiraProvider';
+import { openModal } from '@/common/features/modalSlice';
 
 interface Props {
   index: number;
@@ -13,9 +14,9 @@ interface Props {
 }
 
 function JiraCard({ title, id, description, index }: Props) {
-  // const { setOpenedCard } = useJiraContext();
+  const dispatch = useDispatch();
   const onEditButtonClick: MouseEventHandler = () => {
-    // setOpenedCard(id);
+    dispatch(openModal({ component: 'jira/editCard', props: { id, title, description, columnId: 'Column 1' } }));
   };
   return (
     <Draggable draggableId={id} index={index}>

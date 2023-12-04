@@ -1,15 +1,14 @@
 import type { FormEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-import type { CreateCardPayload } from '@/packages/Jira/interfaces/jira.interface';
-
 interface Props {
   title?: string;
   description?: string;
-  onSave: (payload: Omit<CreateCardPayload, 'columnId'>) => void;
+  columnId?: string;
+  onSave: (payload: any) => void;
 }
 
-function CardForm({ title = '', description = '', onSave }: Props) {
+function CardForm({ title = '', description = '', columnId, onSave }: Props) {
   const [titleValue, setTitle] = useState(title);
   const [descriptionValue, setDescription] = useState(description);
   const inputRef = useRef<HTMLInputElement>(null);

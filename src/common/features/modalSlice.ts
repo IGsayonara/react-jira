@@ -4,8 +4,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import type { CreateCardProps } from '@/packages/Jira/components/CardCreation/CreateCard';
 
+import type { ICard } from '@/packages/Jira/interfaces/jira.interface';
+
 export interface IModalProps {
   'jira/createCard': { props: CreateCardProps };
+  'jira/editCard': { props: ICard };
 }
 
 type PropsForComponent<T extends keyof IModalProps> = IModalProps[T]['props'];

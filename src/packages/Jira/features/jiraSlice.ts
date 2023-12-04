@@ -44,11 +44,18 @@ const jiraSlice = createSlice({
 
       columnToInsert?.cards.push(card);
     },
-    editCard: (state: IJiraState, { payload }: { payload: string }) => {
-      const cards = state.columns.map((col) => col.cards).flat(Infinity);
+    editCard: (state: IJiraState, { payload }: { payload: ICard }) => {
+      const cards = state.columns.map((col) => col.cards).flat(Infinity) as ICard[];
+      const cardToEdit = cards.find((card) => card.id === payload.id);
+      console.log(payload);
+      if (!cardToEdit) {
+        throw new Error('Card not found');
+      }
+
+      Object.assign(cardToEdit, payload);
     },
   },
 });
 
-export const { setColumns, addColumn, addCard } = jiraSlice.actions;
+export const { setColumns, addColumn, addCard, editCard } = jiraSlice.actions;
 export default jiraSlice.reducer;
