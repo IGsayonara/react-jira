@@ -1,28 +1,28 @@
-import { useState } from 'react';
 import type { DropResult } from 'react-beautiful-dnd';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { useDispatch } from 'react-redux';
+
+import cloneDeep from 'lodash/cloneDeep';
 
 import ModalWindow from '@/common/components/ModalWindow/ModalWindow';
-import CardCreation from '@/packages/Jira/components/CardCreation/CardCreation';
+import CardForm from '@/packages/Jira/components/CardCreation/CardForm';
+import CreateCard from '@/packages/Jira/components/CardCreation/CreateCard';
 import JIraColumn from '@/packages/Jira/components/JiraColumn/JIraColumn';
 
 import './JiraSpace.scss';
-import type { ICard } from '@/packages/Jira/interfaces/jira.interface';
+import { setColumns } from '@/packages/Jira/features/jiraSlice';
 import { useJiraContext } from '@/packages/Jira/providers/JiraProvider';
 
 function JiraSpace() {
-  const { columns, setColumns, openedCard, setOpenedCard } = useJiraContext();
-
-  const onModalClose = () => {
-    setOpenedCard(null);
-  };
+  const { columns } = useJiraContext();
+  const dispatch = useDispatch();
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return; // Drop occurred outside of a valid droppable area
     }
 
-    const updatedColumns = [...columns];
+    const updatedColumns = cloneDeep(columns);
     const [movedCard] =
       updatedColumns.find((col) => col.title === result.source.droppableId)?.cards.splice(result.source.index, 1) || [];
 
@@ -32,7 +32,7 @@ function JiraSpace() {
         ?.cards.splice(result.destination.index, 0, movedCard);
     }
 
-    setColumns(updatedColumns);
+    dispatch(setColumns(updatedColumns));
   };
 
   return (
@@ -41,11 +41,6 @@ function JiraSpace() {
         {columns.map(({ title, cards }) => {
           return <JIraColumn title={title} key={title} cards={cards} />;
         })}
-        <ModalWindow isOpen={!!openedCard} onClose={onModalClose}>
-          <div>
-            <CardCreation />
-          </div>
-        </ModalWindow>
       </div>
     </DragDropContext>
   );

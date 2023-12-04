@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
-export interface CounterState {
+export interface ICounterState {
   count: number;
 }
 
-const initialState: CounterState = {
+const initialState: ICounterState = {
   count: 0,
 };
 
@@ -13,10 +13,10 @@ const counterSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
-    increment: (state: CounterState) => {
+    increment: (state: ICounterState) => {
       state.count += 1;
     },
-    decrement: (state: CounterState) => {
+    decrement: (state: ICounterState) => {
       state.count -= 1;
     },
   },

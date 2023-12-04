@@ -7,6 +7,8 @@ import store from '@/store/store';
 import Jira from '@/views/JiraView/Jira';
 import Nested from '@/views/NestedRoutes/Nested';
 
+import ModalWrapper from '@/common/components/ModalWindow/ModalWrapper';
+
 function App() {
   return (
     <ReduxProvider store={store}>
@@ -20,6 +22,7 @@ function App() {
           <Route index element={<Jira />} />
           <Route path="/about" element={<Nested />} />
         </Routes>
+        <ModalWrapper />
       </ThemeProvider>
     </ReduxProvider>
   );

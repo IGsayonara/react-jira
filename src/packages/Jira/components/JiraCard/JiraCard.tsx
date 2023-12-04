@@ -13,9 +13,9 @@ interface Props {
 }
 
 function JiraCard({ title, id, description, index }: Props) {
-  const { setOpenedCard } = useJiraContext();
+  // const { setOpenedCard } = useJiraContext();
   const onEditButtonClick: MouseEventHandler = () => {
-    setOpenedCard(id);
+    // setOpenedCard(id);
   };
   return (
     <Draggable draggableId={id} index={index}>
