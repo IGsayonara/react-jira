@@ -20,6 +20,7 @@ const initialState: IJiraState = {
     },
     { title: 'Column 2', cards: [] },
     { title: 'Column 3', cards: [] },
+    { title: 'Column 4', cards: [] },
   ],
 };
 
@@ -47,7 +48,6 @@ const jiraSlice = createSlice({
     editCard: (state: IJiraState, { payload }: { payload: ICard }) => {
       const cards = state.columns.map((col) => col.cards).flat(Infinity) as ICard[];
       const cardToEdit = cards.find((card) => card.id === payload.id);
-      console.log(payload);
       if (!cardToEdit) {
         throw new Error('Card not found');
       }

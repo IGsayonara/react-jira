@@ -1,15 +1,13 @@
+import { Box, Flex } from '@chakra-ui/react';
+
 import type { DropResult } from 'react-beautiful-dnd';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch } from 'react-redux';
 
 import cloneDeep from 'lodash/cloneDeep';
 
-import ModalWindow from '@/common/components/ModalWindow/ModalWindow';
-import CardForm from '@/packages/Jira/components/CardCreation/CardForm';
-import CreateCard from '@/packages/Jira/components/CardCreation/CreateCard';
 import JIraColumn from '@/packages/Jira/components/JiraColumn/JIraColumn';
 
-import './JiraSpace.scss';
 import { setColumns } from '@/packages/Jira/features/jiraSlice';
 import { useJiraContext } from '@/packages/Jira/providers/JiraProvider';
 
@@ -37,11 +35,15 @@ function JiraSpace() {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="jira-space">
+      <Flex h="90vh" gap={6}>
         {columns.map(({ title, cards }) => {
-          return <JIraColumn title={title} key={title} cards={cards} />;
+          return (
+            <Box w="100%" key={title}>
+              <JIraColumn title={title} cards={cards} />
+            </Box>
+          );
         })}
-      </div>
+      </Flex>
     </DragDropContext>
   );
 }

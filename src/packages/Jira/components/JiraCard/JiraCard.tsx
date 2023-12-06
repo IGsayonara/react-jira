@@ -1,22 +1,20 @@
+import { Card, CardBody, CardHeader, Text } from '@chakra-ui/react';
+
 import type { MouseEventHandler, RefObject } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { FaEdit } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
-
-import './JiraCard.scss';
-import { openModal } from '@/common/features/modalSlice';
 
 interface Props {
   index: number;
   title: string;
   id: string;
   description: string;
+  onEdit?: () => void;
 }
 
-function JiraCard({ title, id, description, index }: Props) {
-  const dispatch = useDispatch();
+function JiraCard({ title, id, description, index, onEdit }: Props) {
   const onEditButtonClick: MouseEventHandler = () => {
-    dispatch(openModal({ component: 'jira/editCard', props: { id, title, description, columnId: 'Column 1' } }));
+    onEdit?.();
   };
   return (
     <Draggable draggableId={id} index={index}>
@@ -30,16 +28,12 @@ function JiraCard({ title, id, description, index }: Props) {
               ...provided.draggableProps.style,
             }}
           >
-            <div className="jira-card">
-              <div className="jira-card__header">
-                <div className="jira-card__title">{title}</div>
-                <div className="jira-card_edit_icon">
-                  <FaEdit cursor="pointer" onClick={onEditButtonClick} />
-                </div>
-              </div>
-
-              <div className="jira-card__description">{description}</div>
-            </div>
+            <Card>
+              <CardHeader>{title}</CardHeader>
+              <CardBody>
+                <Text>{description}</Text>
+              </CardBody>
+            </Card>
           </div>
         );
       }}

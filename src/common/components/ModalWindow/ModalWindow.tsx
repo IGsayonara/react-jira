@@ -1,25 +1,57 @@
-import type { ReactNode } from 'react';
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from '@chakra-ui/react';
 
-import './ModalWindow.scss';
+import type { ReactNode } from 'react';
+import { useEffect } from 'react';
+
+// import './ModalWindow.scss';
 
 interface props {
   children: ReactNode;
+  footer?: ReactNode;
+  onClose?: () => void;
+  title: string;
   isOpen: boolean;
-  onClose: () => void;
 }
 
-function ModalWindow({ isOpen, onClose, children }: props) {
-  if (!isOpen) return null;
+function ModalWindow({ isOpen, onClose, children, footer, title }: props) {
+  const { isOpen: isUiModalOpen, onOpen: onUiModalOpen, onClose: onUiModalClose } = useDisclosure();
 
+  const onModalClose = () => {
+    // onUiModalClose();
+    onClose?.();
+  };
+
+  useEffect(() => {
+    onUiModalOpen();
+    return () => {
+      onUiModalClose();
+    };
+  }, [isOpen]);
+
+  if (!isOpen) {
+    return null;
+  }
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <button type="button" className="close-button" onClick={onClose}>
-          Close
-        </button>
-        {children}
-      </div>
-    </div>
+    <Modal isOpen={isUiModalOpen} onClose={onModalClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>{title}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>{children}</ModalBody>
+
+        {footer && <ModalFooter>{footer}</ModalFooter>}
+      </ModalContent>
+    </Modal>
   );
 }
 
